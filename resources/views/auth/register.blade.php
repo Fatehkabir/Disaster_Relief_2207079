@@ -14,14 +14,14 @@
                 <div class="card-body p-4">
                     <form action="{{ route('register') }}" method="POST" id="registerForm">
                         @csrf
+
+                       
                         <div class="mb-4">
                             <label class="form-label fw-bold">I am a: <span class="text-danger">*</span></label>
                             <div class="row g-2">
                                 @foreach([
                                     ['value'=>'victim','icon'=>'🆘','label'=>'Victim / Affected Person','desc'=>'Need assistance'],
                                     ['value'=>'volunteer','icon'=>'🦺','label'=>'Volunteer','desc'=>'Want to help'],
-                                    ['value'=>'donor','icon'=>'📦','label'=>'Donor','desc'=>'Donate supplies'],
-                                    ['value'=>'organization','icon'=>'🏢','label'=>'Organization / NGO','desc'=>'Coordinate relief'],
                                 ] as $role)
                                 <div class="col-md-6">
                                     <input type="radio" class="btn-check" name="role" id="role_{{ $role['value'] }}"
@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                     
+                      
                         <div id="volunteerFields" class="mt-3" style="display:none">
                             <hr>
                             <h6 class="fw-bold text-success"><i class="bi bi-person-badge me-1"></i>Volunteer Information</h6>
@@ -91,37 +91,7 @@
                             </div>
                         </div>
 
-                   
-                        <div id="organizationFields" class="mt-3" style="display:none">
-                            <hr>
-                            <h6 class="fw-bold text-primary"><i class="bi bi-building me-1"></i>Organization Information</h6>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Organization Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="organization_name" class="form-control @error('organization_name') is-invalid @enderror"
-                                           value="{{ old('organization_name') }}" placeholder="Official org name">
-                                    @error('organization_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Organization Type</label>
-                                    <select name="organization_type" class="form-select">
-                                        <option value="">Select type</option>
-                                        <option value="ngo">NGO</option>
-                                        <option value="government">Government Agency</option>
-                                        <option value="hospital">Hospital / Medical</option>
-                                        <option value="religious">Religious Organization</option>
-                                        <option value="community">Community Group</option>
-                                        <option value="international">International Agency</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label fw-semibold">Registration Number</label>
-                                    <input type="text" name="registration_number" class="form-control"
-                                           value="{{ old('registration_number') }}" placeholder="Official registration or license number">
-                                </div>
-                            </div>
-                        </div>
+
 
                         <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold mt-4">
                             <i class="bi bi-person-check me-2"></i>Create Account
@@ -142,11 +112,9 @@
 const roleRadios = document.querySelectorAll('input[name="role"]');
 roleRadios.forEach(r => r.addEventListener('change', function() {
     document.getElementById('volunteerFields').style.display = this.value === 'volunteer' ? 'block' : 'none';
-    document.getElementById('organizationFields').style.display = this.value === 'organization' ? 'block' : 'none';
 }));
 
 const oldRole = '{{ old("role") }}';
 if (oldRole === 'volunteer') document.getElementById('volunteerFields').style.display = 'block';
-if (oldRole === 'organization') document.getElementById('organizationFields').style.display = 'block';
 </script>
 @endsection

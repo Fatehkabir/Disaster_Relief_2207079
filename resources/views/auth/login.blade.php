@@ -41,6 +41,19 @@
             <div class="text-center mt-4">
                 <p class="text-muted">Don't have an account? <a href="{{ route('register') }}" class="text-danger fw-bold">Register here</a></p>
             </div>
+
+            {{-- Demo Accounts --}}
+            <div class="card border-warning mt-4">
+                <div class="card-body p-3">
+                    <h6 class="fw-bold text-warning"><i class="bi bi-info-circle me-1"></i>Demo Accounts</h6>
+                    <div class="small">
+                        <div class="mb-1"><strong>Admin:</strong> admin@relief.com / password</div>
+                        <div class="mb-1"><strong>Volunteer:</strong> volunteer@relief.com / password</div>
+                        <div class="mb-1"><strong>Donor:</strong> donor@relief.com / password</div>
+                        <div><strong>Victim:</strong> victim@relief.com / password</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -10,6 +10,8 @@
                 <p class="text-muted mb-0">Full platform oversight and coordination</p>
             </div>
         </div>
+
+      
         <div class="row g-3 mb-4">
             <div class="col-6 col-md-3">
                 <div class="stat-card" style="background:linear-gradient(135deg,#dc2626,#991b1b)">
@@ -41,7 +43,7 @@
             </div>
         </div>
 
-
+      
         @if($stats['pending_verification'] > 0 || $stats['unverified_users'] > 0 || $stats['urgent_requests'] > 0)
         <div class="alert alert-danger border-0 shadow-sm mb-4">
             <h6 class="fw-bold mb-2">⚠️ Requires Immediate Attention</h6>
@@ -53,7 +55,7 @@
                 @endif
                 @if($stats['unverified_users'] > 0)
                 <a href="{{ route('admin.users', ['verified' => 'no']) }}" class="btn btn-warning btn-sm">
-                    👤 {{ $stats['unverified_users'] }} Unverified Organizations
+                    👤 {{ $stats['unverified_users'] }} Unverified Volunteers
                 </a>
                 @endif
                 @if($stats['urgent_requests'] > 0)
@@ -80,7 +82,7 @@
                     </div>
                 </div>
 
-
+              
                 @if($criticalIncidents->count() > 0)
                 <div class="card mb-4 border-danger">
                     <div class="card-header fw-bold bg-danger text-white">
@@ -102,7 +104,7 @@
                 </div>
                 @endif
 
-       
+           
                 @if($pendingIncidents->count() > 0)
                 <div class="card mb-4">
                     <div class="card-header fw-bold d-flex justify-content-between align-items-center">
@@ -125,7 +127,6 @@
                 </div>
                 @endif
 
-            
                 <div class="row g-4">
                     <div class="col-md-6">
                         <div class="card">
@@ -166,17 +167,16 @@
                 </div>
             </div>
 
-            {{-- Right Column --}}
+            
             <div class="col-lg-4">
 
+                
                 <div class="card mb-4">
                     <div class="card-header fw-bold"><i class="bi bi-grid me-2"></i>Platform Summary</div>
                     <div class="card-body p-0">
                         @foreach([
                             ['label'=>'Total Users','value'=>$stats['total_users'],'icon'=>'bi-people','color'=>'primary'],
                             ['label'=>'Volunteers','value'=>$stats['volunteers'],'icon'=>'bi-person-check','color'=>'success'],
-                            ['label'=>'Donors','value'=>$stats['donors'],'icon'=>'bi-box-seam','color'=>'info'],
-                            ['label'=>'Organizations','value'=>$stats['organizations'],'icon'=>'bi-building','color'=>'purple'],
                             ['label'=>'Total Incidents','value'=>$stats['total_incidents'],'icon'=>'bi-exclamation-triangle','color'=>'danger'],
                             ['label'=>'Volunteer Tasks','value'=>$stats['total_tasks'],'icon'=>'bi-clipboard-check','color'=>'success'],
                             ['label'=>'Total Donations','value'=>$stats['total_donations'],'icon'=>'bi-gift','color'=>'primary'],
@@ -191,7 +191,7 @@
                     </div>
                 </div>
 
-       
+                
                 <div class="card mb-4">
                     <div class="card-header fw-bold"><i class="bi bi-lightning me-2 text-warning"></i>Admin Actions</div>
                     <div class="card-body d-grid gap-2">
@@ -204,7 +204,7 @@
                     </div>
                 </div>
 
-
+               
                 <div class="card">
                     <div class="card-header fw-bold"><i class="bi bi-person-plus me-2"></i>Recent Registrations</div>
                     <div class="card-body p-0">
