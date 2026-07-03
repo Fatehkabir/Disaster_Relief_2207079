@@ -1,32 +1,72 @@
 @extends('layouts.app')
-@section('title', 'My Donations')
+@section('title', 'My Pledged Donations')
 @section('content')
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold mb-0">My Donations</h2>
-        <a href="{{ route('donations.create') }}" class="btn btn-primary fw-bold"><i class="bi bi-plus-circle me-2"></i>Pledge Donation</a>
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1>📦 My Pledged Donations</h1>
+            <p>Track items you pledged to donate</p>
+        </div>
+        <a href="{{ route('donations.create') }}" class="btn btn-primary">
+            <i class="bi bi-gift me-1"></i>Pledge Donation
+        </a>
     </div>
-    @forelse($donations as $donation)
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="d-flex align-items-center">
-                <span class="me-3" style="font-size:2rem">{{ $donation->category_icon }}</span>
-                <div class="flex-grow-1">
-                    <div class="d-flex gap-2 mb-1">{!! $donation->status_badge !!}</div>
-                    <h6 class="fw-bold mb-1"><a href="{{ route('donations.show', $donation) }}" class="text-decoration-none text-dark">{{ $donation->title }}</a></h6>
-                    <div class="text-muted small">{{ number_format($donation->quantity) }} {{ $donation->unit }} · {{ ucfirst(str_replace('_',' ',$donation->category)) }} · {{ $donation->created_at->diffForHumans() }}</div>
-                </div>
-                <a href="{{ route('donations.show', $donation) }}" class="btn btn-sm btn-outline-primary ms-3">View</a>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-3">Donated Item</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Pickup Location</th>
+                            <th>Status</th>
+                            <th>Pledged At</th>
+                            <th class="pe-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($donations as $don)
+                        <tr>
+                            <td class="ps-3">
+                                <a href="{{ route('donations.show', $don) }}" class="fw-600 text-dark text-decoration-none">
+                                    {{ $don->title }}
+                                </a>
+                                @if($don->incident)
+                                    <div class="text-muted" style="font-size:0.75rem">For Incident: {{ Str::limit($don->incident->title, 40) }}</div>
+                                @endif
+                            </td>
+                            <td>{{ $don->category_icon }} {{ ucfirst(str_replace('_', ' ', $don->category)) }}</td>
+                            <td class="fw-600 text-primary">{{ $don->quantity }} {{ $don->unit }}</td>
+                            <td>📍 {{ Str::limit($don->pickup_location, 30) }}</td>
+                            <td>{!! $don->status_badge !!}</td>
+                            <td>{{ $don->created_at->format('d M Y') }}</td>
+                            <td class="pe-3 text-end">
+                                <a href="{{ route('donations.show', $don) }}" class="btn btn-sm btn-outline-primary">Details</a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="empty-state py-2">
+                                    <i class="bi bi-box-seam text-muted"></i>
+                                    <div>You have not pledged any donations yet.</div>
+                                    <a href="{{ route('donations.create') }}" class="btn btn-sm btn-primary mt-2">Pledge a Donation Now</a>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    @empty
-    <div class="text-center py-5">
-        <div style="font-size:4rem">📦</div>
-        <h5 class="mt-3">No donations yet</h5>
-        <p class="text-muted"><a href="{{ route('donations.create') }}">Pledge your first donation</a> to help relief efforts.</p>
+    <div class="mt-3">
+        {{ $donations->links() }}
     </div>
-    @endforelse
-    {{ $donations->links() }}
 </div>
 @endsection

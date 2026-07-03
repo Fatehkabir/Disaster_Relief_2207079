@@ -1,120 +1,112 @@
-@extends('layouts.app')
-@section('title', 'Register')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — ReliefBD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #f1f5f9; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0; }
+        .auth-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,.08); padding: 2.5rem; width: 100%; max-width: 460px; }
+        .auth-logo { text-align: center; margin-bottom: 1.75rem; }
+        .auth-logo .icon { font-size: 2.5rem; }
+        .auth-logo h1 { font-size: 1.5rem; font-weight: 700; color: #1e293b; margin: 0.25rem 0 0; }
+        .auth-logo p { color: #64748b; font-size: 0.9rem; margin: 0; }
+        .form-label { font-weight: 600; font-size: 0.88rem; color: #374151; }
+        .form-control, .form-select { border-color: #d1d5db; border-radius: 7px; padding: 0.6rem 0.85rem; }
+        .form-control:focus, .form-select:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+        .btn-primary { background: #2563eb; border: none; border-radius: 7px; font-weight: 600; padding: 0.65rem; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .role-option { border: 2px solid #e2e8f0; border-radius: 8px; padding: 0.75rem 1rem; cursor: pointer; transition: all .15s; }
+        .role-option:hover { border-color: #93c5fd; background: #eff6ff; }
+        input[name=role]:checked + .role-option { border-color: #2563eb; background: #eff6ff; }
+        .role-option .role-title { font-weight: 600; font-size: 0.9rem; color: #1e293b; }
+        .role-option .role-desc { font-size: 0.78rem; color: #64748b; }
+    </style>
+</head>
+<body>
+<div class="auth-card">
+    <div class="auth-logo">
+        <div class="icon">🆘</div>
+        <h1>Create Account</h1>
+        <p>Join the ReliefBD platform</p>
+    </div>
 
-@section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="text-center mb-4">
-                <div style="font-size:3rem">🙌</div>
-                <h2 class="fw-bold">Join the Relief Network</h2>
-                <p class="text-muted">Select your role and start making a difference</p>
-            </div>
-            <div class="card border-0 shadow-sm">
-                <div class="card-body p-4">
-                    <form action="{{ route('register') }}" method="POST" id="registerForm">
-                        @csrf
+    @if($errors->any())
+        <div class="alert alert-danger py-2 mb-3" style="font-size:0.88rem;border-radius:7px">
+            <ul class="mb-0 ps-3">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-                       
-                        <div class="mb-4">
-                            <label class="form-label fw-bold">I am a: <span class="text-danger">*</span></label>
-                            <div class="row g-2">
-                                @foreach([
-                                    ['value'=>'victim','icon'=>'🆘','label'=>'Victim / Affected Person','desc'=>'Need assistance'],
-                                    ['value'=>'volunteer','icon'=>'🦺','label'=>'Volunteer','desc'=>'Want to help'],
-                                ] as $role)
-                                <div class="col-md-6">
-                                    <input type="radio" class="btn-check" name="role" id="role_{{ $role['value'] }}"
-                                           value="{{ $role['value'] }}" {{ old('role') === $role['value'] ? 'checked' : '' }} required>
-                                    <label class="btn btn-outline-secondary w-100 text-start p-3" for="role_{{ $role['value'] }}">
-                                        <span class="me-2">{{ $role['icon'] }}</span>
-                                        <strong>{{ $role['label'] }}</strong>
-                                        <br><small class="text-muted ms-4 ps-1">{{ $role['desc'] }}</small>
-                                    </label>
-                                </div>
-                                @endforeach
-                            </div>
-                            @error('role') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
+    <form action="{{ route('register') }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Your full name" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="you@example.com" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Phone Number <span class="text-muted fw-normal">(optional)</span></label>
+            <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="01XXXXXXXXX">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Min. 8 characters" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" name="password_confirmation" class="form-control" placeholder="Repeat password" required>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label d-block mb-2">I am registering as a...</label>
+            <div class="row g-2">
+                <div class="col-6">
+                    <label class="d-block">
+                        <input type="radio" name="role" value="victim" class="d-none" {{ old('role', 'victim') === 'victim' ? 'checked' : '' }}>
+                        <div class="role-option">
+                            <div class="role-title">🟡 Victim</div>
+                            <div class="role-desc">I need relief assistance</div>
                         </div>
-
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                                       value="{{ old('name') }}" placeholder="Your full name" required>
-                                @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Phone Number</label>
-                                <input type="tel" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="+880 1XXXXXXXXX">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                                       value="{{ old('email') }}" placeholder="you@example.com" required>
-                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
-                                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                                       placeholder="Minimum 8 characters" required>
-                                @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
-                                <input type="password" name="password_confirmation" class="form-control" placeholder="Repeat password" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">City / District</label>
-                                <input type="text" name="city" class="form-control" value="{{ old('city') }}" placeholder="e.g. Dhaka">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Address</label>
-                                <input type="text" name="address" class="form-control" value="{{ old('address') }}" placeholder="Street address">
-                            </div>
+                    </label>
+                </div>
+                <div class="col-6">
+                    <label class="d-block">
+                        <input type="radio" name="role" value="volunteer" class="d-none" {{ old('role') === 'volunteer' ? 'checked' : '' }}>
+                        <div class="role-option">
+                            <div class="role-title">🟢 Volunteer</div>
+                            <div class="role-desc">I want to help others</div>
                         </div>
-
-                      
-                        <div id="volunteerFields" class="mt-3" style="display:none">
-                            <hr>
-                            <h6 class="fw-bold text-success"><i class="bi bi-person-badge me-1"></i>Volunteer Information</h6>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Skills & Expertise</label>
-                                <input type="text" name="skills" class="form-control" value="{{ old('skills') }}"
-                                       placeholder="e.g. First Aid, Driving, Cooking, Medical, Construction">
-                                <div class="form-text">Comma-separated list of your skills</div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Availability</label>
-                                <input type="text" name="availability" class="form-control" value="{{ old('availability') }}"
-                                       placeholder="e.g. Weekends, Evenings, Full-time">
-                            </div>
-                        </div>
-
-
-
-                        <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold mt-4">
-                            <i class="bi bi-person-check me-2"></i>Create Account
-                        </button>
-                    </form>
+                    </label>
                 </div>
             </div>
-            <div class="text-center mt-3">
-                <p class="text-muted">Already registered? <a href="{{ route('login') }}" class="text-danger fw-bold">Login here</a></p>
-            </div>
         </div>
-    </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-person-plus me-2"></i>Create Account
+        </button>
+
+        <div class="text-center mt-3">
+            <span style="font-size:0.88rem;color:#64748b">Already have an account?</span>
+            <a href="{{ route('login') }}" style="font-size:0.88rem;font-weight:600;color:#2563eb"> Login</a>
+        </div>
+    </form>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-const roleRadios = document.querySelectorAll('input[name="role"]');
-roleRadios.forEach(r => r.addEventListener('change', function() {
-    document.getElementById('volunteerFields').style.display = this.value === 'volunteer' ? 'block' : 'none';
-}));
-
-const oldRole = '{{ old("role") }}';
-if (oldRole === 'volunteer') document.getElementById('volunteerFields').style.display = 'block';
-</script>
-@endsection
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

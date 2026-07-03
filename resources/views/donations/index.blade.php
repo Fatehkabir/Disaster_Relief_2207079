@@ -1,75 +1,98 @@
 @extends('layouts.app')
-@section('title', 'Donations')
+@section('title', 'Browse Donations')
 @section('content')
-<div class="container py-4">
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="page-header">
+    <div class="container d-flex justify-content-between align-items-center">
         <div>
-            <h2 class="section-title mb-0">Donation Tracker</h2>
-            <p class="section-subtitle mb-0">Items and supplies pledged for relief</p>
+            <h1>📦 Donations Directory</h1>
+            <p>Browse all pledged and collected donations</p>
         </div>
-        @auth
-        <a href="{{ route('donations.create') }}" class="btn btn-primary fw-bold"><i class="bi bi-plus-circle me-2"></i>Pledge Donation</a>
-        @endauth
+        @if(auth()->user()->isVictim())
+        <a href="{{ route('donations.create') }}" class="btn btn-primary">
+            <i class="bi bi-gift me-1"></i>Pledge Donation
+        </a>
+        @endif
     </div>
-    <div class="card mb-4">
-        <div class="card-body py-3">
-            <form method="GET" class="row g-2 align-items-end">
-                <div class="col-md-4"><input type="text" name="search" class="form-control" placeholder="🔍 Search donations..." value="{{ request('search') }}"></div>
-                <div class="col-md-3">
-                    <select name="category" class="form-select">
-                        <option value="">All Categories</option>
-                        @foreach(['food','water','medicine','clothing','shelter_materials','hygiene','baby_supplies','tools_equipment','furniture','electronics','other'] as $c)
-                        <option value="{{ $c }}" {{ request('category') === $c ? 'selected':'' }}>{{ ucfirst(str_replace('_',' ',$c)) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select name="status" class="form-select">
-                        <option value="">All Statuses</option>
-                        @foreach(['pledged','collected','in_transit','delivered','distributed'] as $s)
-                        <option value="{{ $s }}" {{ request('status') === $s ? 'selected':'' }}>{{ ucfirst(str_replace('_',' ',$s)) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 d-flex gap-2">
-                    <button class="btn btn-primary w-100">Filter</button>
-                    <a href="{{ route('donations.index') }}" class="btn btn-outline-secondary">✕</a>
-                </div>
-            </form>
+</div>
+
+<div class="container">
+    <form class="row g-2 mb-4" method="GET">
+        <div class="col-md-4">
+            <select name="category" class="form-select form-select-sm">
+                <option value="">All Categories</option>
+                @foreach(['food','water','medicine','clothing','shelter_materials','hygiene','other'] as $cat)
+                <option value="{{ $cat }}" {{ request('category') === $cat ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $cat)) }}</option>
+                @endforeach
+            </select>
         </div>
-    </div>
-    <div class="row g-4">
-        @forelse($donations as $donation)
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <span style="font-size:2rem">{{ $donation->category_icon }}</span>
-                        {!! $donation->status_badge !!}
-                    </div>
-                    <h6 class="fw-bold">{{ $donation->title }}</h6>
-                    <p class="text-muted small mb-2">{{ Str::limit($donation->description, 80) }}</p>
-                    <div class="d-flex justify-content-between text-muted small mb-2">
-                        <span>📦 {{ number_format($donation->quantity) }} {{ $donation->unit }}</span>
-                        <span>{{ ucfirst(str_replace('_',' ',$donation->category)) }}</span>
-                    </div>
-                    <div class="text-muted small">
-                        By {{ $donation->donor->name }} · {{ $donation->created_at->diffForHumans() }}
-                    </div>
-                    @if($donation->condition)<div class="text-muted small">Condition: {{ ucfirst($donation->condition) }}</div>@endif
-                </div>
-                <div class="card-footer bg-transparent">
-                    <a href="{{ route('donations.show', $donation) }}" class="btn btn-primary btn-sm w-100">View Details</a>
-                </div>
+        <div class="col-md-4">
+            <select name="status" class="form-select form-select-sm">
+                <option value="">All Statuses</option>
+                @foreach(['pledged','collected','delivered'] as $st)
+                <option value="{{ $st }}" {{ request('status') === $st ? 'selected' : '' }}>{{ ucfirst($st) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary btn-sm w-100">Filter</button>
+        </div>
+    </form>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-3">Item Details</th>
+                            <th>Donor</th>
+                            <th>Quantity</th>
+                            <th>Pickup Location</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th class="pe-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($donations as $don)
+                        <tr>
+                            <td class="ps-3">
+                                <a href="{{ route('donations.show', $don) }}" class="fw-700 text-dark text-decoration-none">
+                                    {{ $don->title }}
+                                </a>
+                                <div class="text-muted style-subtext" style="font-size: 0.78rem">
+                                    {{ $don->category_icon }} {{ ucfirst(str_replace('_', ' ', $don->category)) }}
+                                    @if($don->incident)
+                                        · Link: {{ Str::limit($don->incident->title, 35) }}
+                                    @endif
+                                </div>
+                            </td>
+                            <td>👤 {{ $don->donor->name }}</td>
+                            <td class="fw-600 text-primary">{{ $don->quantity }} {{ $don->unit }}</td>
+                            <td>📍 {{ $don->pickup_location ?? 'N/A' }}</td>
+                            <td>{!! $don->status_badge !!}</td>
+                            <td>{{ $don->created_at->format('d M Y') }}</td>
+                            <td class="pe-3 text-end">
+                                <a href="{{ route('donations.show', $don) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="empty-state py-2">
+                                    <i class="bi bi-box-seam"></i>
+                                    <div>No donations found.</div>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
-        @empty
-        <div class="col-12 text-center py-5">
-            <div style="font-size:4rem">📦</div>
-            <h5 class="mt-3">No donations found</h5>
-        </div>
-        @endforelse
     </div>
-    <div class="mt-4">{{ $donations->withQueryString()->links() }}</div>
+    <div class="mt-3">
+        {{ $donations->withQueryString()->links() }}
+    </div>
 </div>
 @endsection
