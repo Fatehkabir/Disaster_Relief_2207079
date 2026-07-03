@@ -65,13 +65,6 @@
         <span style="font-size:0.88rem;color:#64748b">Don't have an account?</span>
         <a href="{{ route('register') }}" style="font-size:0.88rem;font-weight:600;color:#2563eb">Register here</a>
     </div>
-
-    <div class="test-accounts">
-        <strong>🔑 Test Accounts (password: password)</strong>
-        <div>Admin: admin@relief.com</div>
-        <div>Victim: victim@relief.com</div>
-        <div>Volunteer: volunteer@relief.com</div>
-    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
