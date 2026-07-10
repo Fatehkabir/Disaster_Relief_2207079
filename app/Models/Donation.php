@@ -17,7 +17,7 @@ class Donation extends Model
 
     public function donor()
     {
-        return $this->belongsTo(User::class, 'donor_id');
+        return $this->belongsTo(User::class, 'donor_id')->withTrashed();
     }
 
     public function incident()

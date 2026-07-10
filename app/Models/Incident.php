@@ -23,7 +23,7 @@ class Incident extends Model
 
     public function reporter()
     {
-        return $this->belongsTo(User::class, 'reported_by');
+        return $this->belongsTo(User::class, 'reported_by')->withTrashed();
     }
 
     public function reliefRequests()
