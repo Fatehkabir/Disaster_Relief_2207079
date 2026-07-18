@@ -16,39 +16,7 @@
 </div>
 
 <div class="container">
-    <form class="row g-2 mb-4" method="GET">
-        <div class="col-md-3">
-            <select name="type" class="form-select form-select-sm">
-                <option value="">All Types</option>
-                @foreach(['flood','earthquake','cyclone','fire','landslide','drought','other'] as $t)
-                <option value="{{ $t }}" {{ request('type') === $t ? 'selected' : '' }}>{{ ucfirst($t) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="severity" class="form-select form-select-sm">
-                <option value="">All Severity</option>
-                @foreach(['low','medium','high','critical'] as $s)
-                <option value="{{ $s }}" {{ request('severity') === $s ? 'selected' : '' }}>{{ ucfirst($s) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Status</option>
-                @foreach(['pending','verified','active','resolved'] as $st)
-                <option value="{{ $st }}" {{ request('status') === $st ? 'selected' : '' }}>{{ ucfirst($st) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-2">
-            <input type="text" name="search" class="form-control form-control-sm" placeholder="Search..." value="{{ request('search') }}">
-        </div>
-        <div class="col-md-1">
-            <button class="btn btn-primary btn-sm w-100">Filter</button>
-        </div>
-    </form>
-
+    {{-- Incidents List --}}
     @forelse($incidents as $incident)
     <div class="card mb-3 severity-{{ $incident->severity }}">
         <div class="card-body py-3">
@@ -64,7 +32,7 @@
                         📍 {{ $incident->location_name }}
                         · 👥 {{ number_format($incident->affected_people) }} affected
                         · 📅 {{ $incident->created_at->diffForHumans() }}
-                        · By {{ $incident->reporter->name }}
+                        · By {{ $incident->reporter->name ?? 'Deleted User' }}
                     </div>
                     <div class="mt-1 text-muted" style="font-size:.83rem">{{ Str::limit($incident->description, 120) }}</div>
                 </div>

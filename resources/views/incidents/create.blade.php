@@ -47,7 +47,7 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-8">
                                 <label class="form-label">Location *</label>
-                                <input type="text" name="location_name" class="form-control" value="{{ old('location_name') }}" placeholder="e.g. Sylhet Sadar, Sylhet" required>
+                                <input type="text" name="location_name" class="form-control" value="{{ old('location_name', $preferredLocation ?? '') }}" placeholder="e.g. Sylhet Sadar, Sylhet" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">People Affected</label>

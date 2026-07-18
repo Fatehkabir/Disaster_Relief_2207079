@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-muted small fw-bold uppercase">Requested By</div>
-                            <div>👤 {{ $reliefRequest->user->name }}</div>
+                             <div>👤 {{ $reliefRequest->user->name ?? 'Deleted User' }}</div>
                         </div>
                         <div class="col-12">
                             <div class="text-muted small fw-bold uppercase">Incident Association</div>
@@ -60,12 +60,12 @@
         </div>
 
         <div class="col-md-4">
-         
+            {{-- Admin Actions --}}
             @if(auth()->user()->isAdmin())
             <div class="card mb-3">
                 <div class="card-header">⚡ Admin Actions</div>
                 <div class="card-body">
-                    <form action="{{ route('admin.requests.status', $reliefRequest) }}" method="POST">
+                    <form action="{{ route('admin.requests.status', ['reliefRequest' => $reliefRequest->id]) }}" method="POST">
                         @csrf
                         @method('PATCH')
                         <div class="mb-3">
@@ -87,11 +87,11 @@
                 <div class="card-body">
                     <div class="mb-2 d-flex justify-content-between">
                         <span class="text-muted">Submitted</span>
-                        <span>{{ $reliefRequest->created_at->format('d M Y') }}</span>
+                        <span>{{ $reliefRequest->created_at?->format('d M Y') ?? 'N/A' }}</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span class="text-muted">Last Updated</span>
-                        <span>{{ $reliefRequest->updated_at->diffForHumans() }}</span>
+                        <span>{{ $reliefRequest->updated_at?->diffForHumans() ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>

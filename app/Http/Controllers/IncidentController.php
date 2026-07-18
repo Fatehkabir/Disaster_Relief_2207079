@@ -27,19 +27,12 @@ class IncidentController extends Controller
 
     public function create(Request $request)
     {
-
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('incidents.index')->with('error', 'Only victims can report incidents.');
-        }
         $preferredLocation = $request->cookie('preferred_location');
         return view('incidents.create', compact('preferredLocation'));
     }
 
     public function store(Request $request)
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('incidents.index')->with('error', 'Only victims can report incidents.');
-        }
 
         $validated = $request->validate([
             'title'           => 'required|string|max:255',

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Relief Requests')
+
 @section('content')
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
@@ -14,43 +15,6 @@
         @endauth
     </div>
 
-    <div class="card mb-4">
-        <div class="card-body py-3">
-            <form method="GET" class="row g-2 align-items-end">
-                <div class="col-md-4">
-                    <input type="text" name="search" class="form-control" placeholder="🔍 Search by title or location..." value="{{ request('search') }}">
-                </div>
-                <div class="col-md-2">
-                    <select name="type" class="form-select">
-                        <option value="">All Types</option>
-                        @foreach(['food','water','medicine','shelter','clothing','rescue','medical_assistance','psychological_support','baby_supplies','elderly_care','disability_assistance','other'] as $t)
-                        <option value="{{ $t }}" {{ request('type') === $t ? 'selected' : '' }}>{{ ucfirst(str_replace('_',' ',$t)) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select name="urgency" class="form-select">
-                        <option value="">All Urgencies</option>
-                        @foreach(['low','medium','high','critical'] as $u)
-                        <option value="{{ $u }}" {{ request('urgency') === $u ? 'selected' : '' }}>{{ ucfirst($u) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <select name="status" class="form-select">
-                        <option value="">All Statuses</option>
-                        @foreach(['pending','acknowledged','in_progress','fulfilled','closed'] as $s)
-                        <option value="{{ $s }}" {{ request('status') === $s ? 'selected' : '' }}>{{ ucfirst(str_replace('_',' ',$s)) }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-2 d-flex gap-2">
-                    <button class="btn btn-warning w-100">Filter</button>
-                    <a href="{{ route('requests.index') }}" class="btn btn-outline-secondary">✕</a>
-                </div>
-            </form>
-        </div>
-    </div>
 
     @if($requests->isEmpty())
     <div class="text-center py-5">

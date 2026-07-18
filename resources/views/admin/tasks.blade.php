@@ -14,20 +14,6 @@
 </div>
 
 <div class="container">
-    <form class="row g-2 mb-4" method="GET">
-        <div class="col-md-9">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
-                <option value="open" {{ request('status') === 'open' ? 'selected' : '' }}>Open</option>
-                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Completed</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <button class="btn btn-success btn-sm w-100">Filter</button>
-        </div>
-    </form>
-
     <div class="card">
         <div class="card-body p-0">
             <div class="table-responsive">

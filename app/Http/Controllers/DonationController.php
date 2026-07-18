@@ -22,19 +22,12 @@ class DonationController extends Controller
 
     public function create()
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('donations.index')->with('error', 'Only victims can pledge donations.');
-        }
         $incidents = Incident::active()->pluck('title', 'id');
         return view('donations.create', compact('incidents'));
     }
 
     public function store(Request $request)
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('donations.index')->with('error', 'Only victims can pledge donations.');
-        }
-
         $validated = $request->validate([
             'title'           => 'required|string|max:255',
             'description'     => 'required|string|min:5',
@@ -63,9 +56,6 @@ class DonationController extends Controller
 
     public function myDonations()
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('dashboard')->with('error', 'This page is for victims only.');
-        }
         $donations = Auth::user()->donations()->with('incident')->latest()->paginate(10);
         return view('donations.my-donations', compact('donations'));
     }

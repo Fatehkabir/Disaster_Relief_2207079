@@ -30,9 +30,6 @@ class VolunteerController extends Controller
 
     public function applyTask(VolunteerTask $task)
     {
-        if (!Auth::user()->isVolunteer()) {
-            return back()->with('error', 'Only volunteers can apply for tasks.');
-        }
         if ($task->isFull()) {
             return back()->with('error', 'This task is already full.');
         }

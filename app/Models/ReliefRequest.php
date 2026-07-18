@@ -16,6 +16,7 @@ class ReliefRequest extends Model
         'location_name', 'contact_phone',
     ];
 
+    // ── Relationships ────────────────────────────────────────
     public function user()
     {
         return $this->belongsTo(User::class)->withTrashed();
@@ -26,6 +27,7 @@ class ReliefRequest extends Model
         return $this->belongsTo(Incident::class);
     }
 
+    // ── Scopes ───────────────────────────────────────────────
     public function scopePending($query)
     {
         return $query->where('status', 'pending');
@@ -41,6 +43,7 @@ class ReliefRequest extends Model
         return $query->whereIn('urgency', ['high', 'critical']);
     }
 
+    // ── Accessors ────────────────────────────────────────────
     public function getUrgencyBadgeAttribute(): string
     {
         return match ($this->urgency) {

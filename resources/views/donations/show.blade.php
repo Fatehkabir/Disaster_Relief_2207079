@@ -37,11 +37,11 @@
                         </div>
                         <div class="col-6">
                             <div class="text-muted small fw-bold uppercase">Pledged By</div>
-                            <div>👤 {{ $donation->donor->name }}</div>
+                            <div>👤 {{ $donation->donor->name ?? 'Deleted User' }}</div>
                         </div>
                         <div class="col-6">
                             <div class="text-muted small fw-bold uppercase">Date Pledged</div>
-                            <div>📅 {{ $donation->created_at->format('d M Y, h:i A') }}</div>
+                            <div>📅 {{ $donation->created_at?->format('d M Y, h:i A') ?? 'N/A' }}</div>
                         </div>
                         <div class="col-12">
                             <div class="text-muted small fw-bold uppercase">Linked Incident</div>

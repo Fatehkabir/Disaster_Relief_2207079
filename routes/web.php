@@ -9,24 +9,24 @@ use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
-
+// Public home
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
+// Authenticated routes
 Route::middleware(['auth'])->group(function () {
 
-  
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-  
+    // Profile (Breeze-style routes + our custom show route)
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::match(['post', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
- 
+    // Incidents
     Route::get('/incidents', [IncidentController::class, 'index'])->name('incidents.index');
     Route::middleware(['victim'])->group(function () {
         Route::get('/incidents/create', [IncidentController::class, 'create'])->name('incidents.create');
@@ -34,7 +34,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/incidents/{incident}', [IncidentController::class, 'show'])->name('incidents.show');
 
-
+    // Relief Requests
     Route::middleware(['victim'])->group(function () {
         Route::get('/requests', [ReliefRequestController::class, 'myRequests'])->name('requests.my');
         Route::get('/requests/create', [ReliefRequestController::class, 'create'])->name('requests.create');
@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/requests/{reliefRequest}', [ReliefRequestController::class, 'show'])->name('requests.show');
 
+    // Donations
     Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
     Route::middleware(['victim'])->group(function () {
         Route::get('/donations/my', [DonationController::class, 'myDonations'])->name('donations.my');
@@ -50,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
 
+    // Volunteers
     Route::get('/volunteers/tasks', [VolunteerController::class, 'tasks'])->name('volunteers.tasks');
     Route::middleware(['volunteer'])->group(function () {
         Route::get('/volunteers/my-tasks', [VolunteerController::class, 'myTasks'])->name('volunteers.my-tasks');
@@ -58,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::get('/volunteers/task/{task}', [VolunteerController::class, 'showTask'])->name('volunteers.task');
 
+    // Admin routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('index');
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');

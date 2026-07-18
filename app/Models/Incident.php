@@ -21,6 +21,7 @@ class Incident extends Model
         'needs_donations'  => 'boolean',
     ];
 
+    // ── Relationships ────────────────────────────────────────
     public function reporter()
     {
         return $this->belongsTo(User::class, 'reported_by')->withTrashed();
@@ -41,6 +42,7 @@ class Incident extends Model
         return $this->hasMany(VolunteerTask::class);
     }
 
+    // ── Scopes ───────────────────────────────────────────────
     public function scopeActive($query)
     {
         return $query->whereIn('status', ['verified', 'active']);
@@ -51,6 +53,7 @@ class Incident extends Model
         return $query->where('status', 'pending');
     }
 
+    // ── Accessors ────────────────────────────────────────────
     public function getSeverityBadgeAttribute(): string
     {
         return match ($this->severity) {

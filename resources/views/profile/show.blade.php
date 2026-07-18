@@ -10,6 +10,7 @@
 
 <div class="container">
     <div class="row">
+        {{-- Profile card overview --}}
         <div class="col-md-4 mb-4">
             <div class="card text-center py-4">
                 <div class="card-body">
@@ -29,6 +30,8 @@
                 </div>
             </div>
         </div>
+
+        {{-- Profile settings form --}}
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">🔧 Edit Profile Information</div>

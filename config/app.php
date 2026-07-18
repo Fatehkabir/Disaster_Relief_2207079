@@ -19,5 +19,6 @@ return [
     ])->toArray(),
 
     'aliases' => Illuminate\Support\Facades\Facade::defaultAliases()->merge([
+        
     ])->toArray(),
 ];

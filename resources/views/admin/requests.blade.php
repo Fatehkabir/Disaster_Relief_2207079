@@ -9,28 +9,6 @@
 </div>
 
 <div class="container">
-    <form class="row g-2 mb-4" method="GET">
-        <div class="col-md-5">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
-                @foreach(['pending','acknowledged','fulfilled','cancelled'] as $st)
-                <option value="{{ $st }}" {{ request('status') === $st ? 'selected' : '' }}>{{ ucfirst($st) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select name="urgency" class="form-select form-select-sm">
-                <option value="">All Urgencies</option>
-                @foreach(['low','medium','high','critical'] as $urg)
-                <option value="{{ $urg }}" {{ request('urgency') === $urg ? 'selected' : '' }}>{{ ucfirst($urg) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-3">
-            <button class="btn btn-primary btn-sm w-100">Filter</button>
-        </div>
-    </form>
-
     <div class="card">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -56,11 +34,11 @@
                                     {{ $req->type_icon }} {{ ucfirst($req->type) }} · People: {{ $req->people_count }} · 📍 {{ $req->location_name }}
                                 </div>
                             </td>
-                            <td>👤 {{ $req->user->name }}</td>
+                            <td>👤 {{ $req->user->name ?? 'Deleted User' }}</td>
                             <td>{!! $req->urgency_badge !!}</td>
                             <td>{!! $req->status_badge !!}</td>
                             <td>
-                                <form action="{{ route('admin.requests.status', $req) }}" method="POST">
+                                <form action="{{ route('admin.requests.status', ['reliefRequest' => $req->id]) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
                                     <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">

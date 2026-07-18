@@ -8,21 +8,6 @@
             <p class="section-subtitle mb-0">{{ $volunteers->total() }} registered volunteers</p>
         </div>
     </div>
-    <div class="card mb-4">
-        <div class="card-body py-3">
-            <form method="GET" class="row g-2 align-items-end">
-                <div class="col-md-4">
-                    <input type="text" name="skills" class="form-control" placeholder="🔍 Search by skills..." value="{{ request('skills') }}">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="city" class="form-control" placeholder="📍 Filter by city..." value="{{ request('city') }}">
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-success w-100">Filter</button>
-                </div>
-            </form>
-        </div>
-    </div>
     <div class="row g-4">
         @forelse($volunteers as $vol)
         <div class="col-md-6 col-lg-4">

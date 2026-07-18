@@ -16,28 +16,6 @@
 </div>
 
 <div class="container">
-    <form class="row g-2 mb-4" method="GET">
-        <div class="col-md-4">
-            <select name="category" class="form-select form-select-sm">
-                <option value="">All Categories</option>
-                @foreach(['food','water','medicine','clothing','shelter_materials','hygiene','other'] as $cat)
-                <option value="{{ $cat }}" {{ request('category') === $cat ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $cat)) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select name="status" class="form-select form-select-sm">
-                <option value="">All Statuses</option>
-                @foreach(['pledged','collected','delivered'] as $st)
-                <option value="{{ $st }}" {{ request('status') === $st ? 'selected' : '' }}>{{ ucfirst($st) }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-primary btn-sm w-100">Filter</button>
-        </div>
-    </form>
-
     <div class="card">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -67,7 +45,7 @@
                                     @endif
                                 </div>
                             </td>
-                            <td>👤 {{ $don->donor->name }}</td>
+                            <td>👤 {{ $don->donor->name ?? 'Deleted User' }}</td>
                             <td class="fw-600 text-primary">{{ $don->quantity }} {{ $don->unit }}</td>
                             <td>📍 {{ $don->pickup_location ?? 'N/A' }}</td>
                             <td>{!! $don->status_badge !!}</td>

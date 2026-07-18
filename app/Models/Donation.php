@@ -15,6 +15,7 @@ class Donation extends Model
         'category', 'quantity', 'unit', 'status', 'pickup_location',
     ];
 
+    // ── Relationships ────────────────────────────────────────
     public function donor()
     {
         return $this->belongsTo(User::class, 'donor_id')->withTrashed();
@@ -25,6 +26,7 @@ class Donation extends Model
         return $this->belongsTo(Incident::class);
     }
 
+    // ── Accessors ────────────────────────────────────────────
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->status) {

@@ -15,6 +15,7 @@ class VolunteerTask extends Model
         'location_name',
     ];
 
+    // ── Relationships ────────────────────────────────────────
     public function incident()
     {
         return $this->belongsTo(Incident::class);
@@ -37,6 +38,7 @@ class VolunteerTask extends Model
         return $this->hasMany(VolunteerTaskAssignment::class);
     }
 
+    // ── Helpers ──────────────────────────────────────────────
     public function isFull(): bool
     {
         return $this->volunteers_assigned >= $this->volunteers_needed;
@@ -47,6 +49,7 @@ class VolunteerTask extends Model
         return max(0, $this->volunteers_needed - $this->volunteers_assigned);
     }
 
+    // ── Accessors ────────────────────────────────────────────
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->status) {

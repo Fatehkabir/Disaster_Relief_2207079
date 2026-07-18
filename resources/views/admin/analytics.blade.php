@@ -11,7 +11,7 @@
         <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Dashboard</a>
     </div>
 
-    
+    {{-- Key Metrics --}}
     <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="card text-center p-4" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7)">
@@ -39,7 +39,7 @@
     </div>
 
     <div class="row g-4">
-        
+        {{-- Top Volunteers --}}
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header fw-bold"><i class="bi bi-trophy me-2 text-warning"></i>Top Volunteers</div>
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        
+        {{-- Top Donors --}}
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header fw-bold"><i class="bi bi-trophy me-2 text-primary"></i>Top Donors</div>
@@ -83,7 +83,7 @@
             </div>
         </div>
 
-      
+        {{-- Requests by District --}}
         <div class="col-12">
             <div class="card">
                 <div class="card-header fw-bold"><i class="bi bi-geo-alt me-2 text-danger"></i>Relief Requests by Location (Top 10)</div>

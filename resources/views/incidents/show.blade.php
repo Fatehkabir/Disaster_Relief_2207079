@@ -34,11 +34,11 @@
                         </div>
                         <div class="col-6">
                             <div class="text-muted" style="font-size:.78rem;text-transform:uppercase;font-weight:600">Reported By</div>
-                            <div>{{ $incident->reporter->name }}</div>
+                            <div>{{ $incident->reporter->name ?? 'Deleted User' }}</div>
                         </div>
                         <div class="col-6">
                             <div class="text-muted" style="font-size:.78rem;text-transform:uppercase;font-weight:600">Reported</div>
-                            <div>{{ $incident->created_at->format('d M Y, h:i A') }}</div>
+                            <div>{{ $incident->created_at?->format('d M Y, h:i A') ?? 'N/A' }}</div>
                         </div>
                     </div>
                     <div class="d-flex gap-2 mt-3">
@@ -52,6 +52,7 @@
                 </div>
             </div>
 
+            {{-- Volunteer Tasks --}}
             @if($incident->volunteerTasks->count() > 0)
             <div class="card mb-3">
                 <div class="card-header">🤝 Volunteer Tasks ({{ $incident->volunteerTasks->count() }})</div>
@@ -72,6 +73,7 @@
             </div>
             @endif
 
+            {{-- Relief Requests --}}
             @if($incident->reliefRequests->count() > 0)
             <div class="card">
                 <div class="card-header">📋 Relief Requests ({{ $incident->reliefRequests->count() }})</div>
@@ -80,7 +82,7 @@
                     <div class="d-flex align-items-center px-3 py-2 border-bottom">
                         <div class="flex-grow-1">
                             <div class="fw-600" style="font-size:.9rem">{{ $req->title }}</div>
-                            <div class="text-muted" style="font-size:.78rem">By {{ $req->user->name }} · {{ $req->people_count }} people</div>
+                            <div class="text-muted" style="font-size:.78rem">By {{ $req->user->name ?? 'Deleted User' }} · {{ $req->people_count }} people</div>
                         </div>
                         {!! $req->urgency_badge !!}
                     </div>
@@ -91,6 +93,7 @@
         </div>
 
         <div class="col-md-4">
+            {{-- Quick Actions --}}
             @if(auth()->user()->isVictim())
             <div class="card mb-3">
                 <div class="card-header">⚡ Quick Actions</div>
@@ -116,6 +119,22 @@
             </div>
             @endif
 
+            {{-- Live Weather Card --}}
+            @if($weather)
+            <div class="card mb-3 border-0 shadow-sm">
+                <div class="card-header bg-primary text-white">🌤️ Live Weather at {{ $incident->location_name }}</div>
+                <div class="card-body d-flex align-items-center gap-3">
+                    <img src="https://openweathermap.org/img/wn/{{ $weather['icon'] }}@2x.png"
+                         alt="{{ $weather['description'] }}" width="60" height="60">
+                    <div>
+                        <div class="fs-4 fw-bold">{{ round($weather['temp']) }}°C</div>
+                        <div class="text-muted text-capitalize">{{ $weather['description'] }}</div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Status info --}}
             <div class="card">
                 <div class="card-header">ℹ️ Status Info</div>
                 <div class="card-body">

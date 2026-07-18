@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('donor_id')->constrained('users')->onDelete('cascade');
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-   
+        
         Schema::create('volunteer_tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('incident_id')->constrained()->onDelete('cascade');
@@ -38,7 +39,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-  
+        
         Schema::create('volunteer_task_assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('volunteer_task_id')->constrained()->onDelete('cascade');

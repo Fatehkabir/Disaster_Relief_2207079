@@ -11,19 +11,12 @@ class ReliefRequestController extends Controller
 {
     public function create(Request $request)
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('dashboard')->with('error', 'Only victims can submit relief requests.');
-        }
         $incidents = Incident::active()->pluck('title', 'id');
         return view('requests.create', compact('incidents'));
     }
 
     public function store(Request $request)
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('dashboard')->with('error', 'Only victims can submit relief requests.');
-        }
-
         $validated = $request->validate([
             'title'         => 'required|string|max:255',
             'description'   => 'required|string|min:10',
@@ -53,9 +46,6 @@ class ReliefRequestController extends Controller
 
     public function myRequests()
     {
-        if (!Auth::user()->isVictim()) {
-            return redirect()->route('dashboard')->with('error', 'This page is for victims only.');
-        }
         $requests = Auth::user()->reliefRequests()->with('incident')->latest()->paginate(10);
         return view('requests.my-requests', compact('requests'));
     }

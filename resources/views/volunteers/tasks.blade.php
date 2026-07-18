@@ -14,30 +14,6 @@
 </div>
 
 <div class="container">
-    <form class="row g-2 mb-4" method="GET">
-        <div class="col-md-4">
-            <select name="category" class="form-select form-select-sm">
-                <option value="">All Categories</option>
-                <option value="search_rescue" {{ request('category') === 'search_rescue' ? 'selected' : '' }}>🔍 Search & Rescue</option>
-                <option value="medical_aid" {{ request('category') === 'medical_aid' ? 'selected' : '' }}>🏥 Medical Aid</option>
-                <option value="food_distribution" {{ request('category') === 'food_distribution' ? 'selected' : '' }}>🍲 Food Distribution</option>
-                <option value="shelter_setup" {{ request('category') === 'shelter_setup' ? 'selected' : '' }}>🏕️ Shelter Setup</option>
-                <option value="logistics" {{ request('category') === 'logistics' ? 'selected' : '' }}>🚛 Logistics</option>
-                <option value="other" {{ request('category') === 'other' ? 'selected' : '' }}>🤝 Other</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <select name="status" class="form-select form-select-sm">
-                <option value="open" {{ request('status', 'open') === 'open' ? 'selected' : '' }}>Open</option>
-                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>Completed</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <button class="btn btn-success btn-sm w-100">Filter</button>
-        </div>
-    </form>
-
     <div class="row g-3">
         @forelse($tasks as $task)
         <div class="col-md-4">

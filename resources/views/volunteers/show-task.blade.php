@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-muted small fw-bold uppercase">Created By</div>
-                            <div>👤 {{ $task->creator->name }}</div>
+                            <div>👤 {{ $task->creator->name ?? 'Deleted User' }}</div>
                         </div>
                         <div class="col-6">
                             <div class="text-muted small fw-bold uppercase">Linked Incident</div>

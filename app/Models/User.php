@@ -22,10 +22,12 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    // ── Role Helpers ─────────────────────────────────────────
     public function isAdmin(): bool     { return $this->role === 'admin'; }
     public function isVolunteer(): bool { return $this->role === 'volunteer'; }
     public function isVictim(): bool    { return $this->role === 'victim'; }
 
+    // ── Relationships ────────────────────────────────────────
     public function reportedIncidents()
     {
         return $this->hasMany(Incident::class, 'reported_by');
@@ -53,6 +55,7 @@ class User extends Authenticatable
         return $this->hasMany(VolunteerTask::class, 'created_by');
     }
 
+    // ── Accessors ────────────────────────────────────────────
     public function getRoleBadgeAttribute(): string
     {
         return match ($this->role) {
