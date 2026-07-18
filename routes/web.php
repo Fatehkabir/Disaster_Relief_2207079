@@ -9,35 +9,56 @@ use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
 Route::middleware(['auth'])->group(function () {
 
-
+  
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+  
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::match(['post', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-   
-    Route::resource('incidents', IncidentController::class)->only(['index', 'create', 'store', 'show']);
 
-    Route::get('/requests', [ReliefRequestController::class, 'myRequests'])->name('requests.my');
-    Route::resource('requests', ReliefRequestController::class)->only(['create', 'store', 'show']);
+ 
+    Route::get('/incidents', [IncidentController::class, 'index'])->name('incidents.index');
+    Route::middleware(['victim'])->group(function () {
+        Route::get('/incidents/create', [IncidentController::class, 'create'])->name('incidents.create');
+        Route::post('/incidents', [IncidentController::class, 'store'])->name('incidents.store');
+    });
+    Route::get('/incidents/{incident}', [IncidentController::class, 'show'])->name('incidents.show');
 
-    Route::get('/donations/my', [DonationController::class, 'myDonations'])->name('donations.my');
-    Route::resource('donations', DonationController::class)->only(['index', 'create', 'store', 'show']);
+
+    Route::middleware(['victim'])->group(function () {
+        Route::get('/requests', [ReliefRequestController::class, 'myRequests'])->name('requests.my');
+        Route::get('/requests/create', [ReliefRequestController::class, 'create'])->name('requests.create');
+        Route::post('/requests', [ReliefRequestController::class, 'store'])->name('requests.store');
+    });
+    Route::get('/requests/{reliefRequest}', [ReliefRequestController::class, 'show'])->name('requests.show');
+
+    Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
+    Route::middleware(['victim'])->group(function () {
+        Route::get('/donations/my', [DonationController::class, 'myDonations'])->name('donations.my');
+        Route::get('/donations/create', [DonationController::class, 'create'])->name('donations.create');
+        Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
+    });
+    Route::get('/donations/{donation}', [DonationController::class, 'show'])->name('donations.show');
 
     Route::get('/volunteers/tasks', [VolunteerController::class, 'tasks'])->name('volunteers.tasks');
-    Route::get('/volunteers/my-tasks', [VolunteerController::class, 'myTasks'])->name('volunteers.my-tasks');
+    Route::middleware(['volunteer'])->group(function () {
+        Route::get('/volunteers/my-tasks', [VolunteerController::class, 'myTasks'])->name('volunteers.my-tasks');
+        Route::post('/volunteers/task/{task}/apply', [VolunteerController::class, 'applyTask'])->name('volunteers.apply');
+        Route::post('/volunteers/task/{task}/withdraw', [VolunteerController::class, 'withdrawTask'])->name('volunteers.withdraw');
+    });
     Route::get('/volunteers/task/{task}', [VolunteerController::class, 'showTask'])->name('volunteers.task');
-    Route::post('/volunteers/task/{task}/apply', [VolunteerController::class, 'applyTask'])->name('volunteers.apply');
-    Route::post('/volunteers/task/{task}/withdraw', [VolunteerController::class, 'withdrawTask'])->name('volunteers.withdraw');
 
-    Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'dashboard'])->name('index');
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/users', [AdminController::class, 'users'])->name('users');
